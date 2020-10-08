@@ -14,6 +14,11 @@ public struct HTTPURLRequest {
     public let request: URLRequest
     public let session: URLSession
     
+    public init(request: URLRequest, session: URLSession = URLSession.shared) {
+        self.request = request
+        self.session = session
+    }
+    
     public func dataTask(completion: @escaping Completion) {
         let task = self.session.dataTask(with: self.request) { (data, response, error) in
             if let error = error {

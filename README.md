@@ -9,7 +9,7 @@ There are available 3 request options: with [`String`](https://developer.apple.c
 ### Requests with String path
 > **Warning**. If the path is empty string or has an invalid value an error is thrown: `HTTPURLRequest.Error.emptyPath` or `HTTPURLRequest.Error.invalidPath(path)` accordingly.
 ```swift
-try? HTTPURLRequest(path: "http://example.com").dataTask() { response in
+try? HTTPURLRequest(path: "http://example.com/").dataTask() { response in
     switch response {
     case let .success(result):
         print(result)
@@ -31,13 +31,13 @@ struct HTTPData: Equatable {
 ```
 If you are only interested in data, you can use the `output.success` property from `response`:
 ```swift
-try? HTTPURLRequest(path: "http://example.com").dataTask() { response in
+try? HTTPURLRequest(path: "http://example.com/").dataTask() { response in
     print(response.output.success)
 }
 ```
 ### Requests with URL
 ```swift
-let url = URL(string: "http://example.com")
+let url = URL(string: "http://example.com/")
 HTTPURLRequest(url: url).dataTask() { response in
     switch response {
     case let .success(result):
@@ -49,7 +49,7 @@ HTTPURLRequest(url: url).dataTask() { response in
 ```
 ### Requests with URLRequest
 ```swift
-let url = URL(string: "http://example.com")
+let url = URL(string: "http://example.com/")
 let request = URLRequest(url: url)
 HTTPURLRequest(request: request).dataTask() { response in
     switch response {

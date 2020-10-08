@@ -1,5 +1,11 @@
 import Foundation
 
+/// **HTTPURLRequest** is an easy way of an HTTP networking in Swift.
+///
+/// `HTTPURLRequest` keeps the information about the request using
+/// [URLRequest](https://developer.apple.com/documentation/foundation/urlrequest) and uses
+/// [URLSession](https://developer.apple.com/documentation/foundation/urlsession)
+///  to send the request to a server.
 public struct HTTPURLRequest {
     public typealias Completion = (Result<HTTPData, Swift.Error>) -> Void
     
@@ -11,15 +17,28 @@ public struct HTTPURLRequest {
         case wrongStatusCode(_ httpData: HTTPData)
     }
     
+    /// A URL load request that is independent of protocol or URL scheme.
     public let request: URLRequest
+    /// An object that coordinates a group of related, network data-transfer tasks.
     public let session: URLSession
     
+    /// Creates and initializes a URL request with the given URLRequest and URLSession (optional).
+    /// - Parameters:
+    ///   - request: A URL load request that is independent of protocol or URL scheme.
+    ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared)
     public init(request: URLRequest, session: URLSession = URLSession.shared) {
         self.request = request
         self.session = session
     }
     
-    public func dataTask(completion: @escaping Completion) {
+    /// Creates a task that retrieves the contents of a URL based on the specified URL request object,
+    /// and calls a handler upon completion.
+    ///
+    /// Newly-initialized tasks start the task immediately.
+    /// - Parameter completion: The completion handler to call when the load request is complete.
+    /// This handler is executed on the delegate queue.
+    @discardableResult
+    public func dataTask(completion: @escaping Completion) -> URLSessionDataTask {
         let task = self.session.dataTask(with: self.request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
@@ -48,6 +67,8 @@ public struct HTTPURLRequest {
         }
         
         task.resume()
+        
+        return task
     }
 }
 

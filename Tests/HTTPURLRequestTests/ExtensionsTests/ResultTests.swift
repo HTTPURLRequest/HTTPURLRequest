@@ -8,15 +8,15 @@ class ResultTests: XCTestCase {
         let result = "TEST"
         self.sut = .success(result)
         
-        XCTAssertEqual(self.sut.output.success, result)
-        XCTAssertNil(self.sut.output.failure)
+        XCTAssertEqual(self.sut.success, result)
+        XCTAssertNil(self.sut.failure)
     }
     
     func test_output_failureOutpoutCreatesCorrectValues() {
         let error = HTTPURLRequest.Error.emptyPath
         self.sut = .failure(error)
         
-        XCTAssertEqual(self.sut.output.failure as? HTTPURLRequest.Error, error)
-        XCTAssertNil(self.sut.output.success)
+        XCTAssertEqual(self.sut.failure as? HTTPURLRequest.Error, error)
+        XCTAssertNil(self.sut.success)
     }
 }

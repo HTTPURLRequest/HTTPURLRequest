@@ -146,8 +146,8 @@ extension HTTPURLRequestTests {
         self.sut.dataTask() { (result) in
             calledCompletion = true
 
-            receivedData = result.output.success
-            receivedError = result.output.failure
+            receivedData = result.success
+            receivedError = result.failure
         }
 
         self.session.lastTask?.completionHandler(data, response, error)

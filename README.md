@@ -6,6 +6,8 @@
 
 ## Making Requests
 There are available 3 request options: with [`String`](https://developer.apple.com/documentation/swift/string) path, [`URL`](https://developer.apple.com/documentation/foundation/url) and [`URLRequest`](https://developer.apple.com/documentation/foundation/urlrequest).
+> **Warning**. Don't forget to pass the response to the main thread if necessary, as requests are executed in the background thread.
+
 ### Requests with String path
 > **Warning**. If the path is empty string or has an invalid value an error is thrown: `HTTPURLRequest.Error.emptyPath` or `HTTPURLRequest.Error.invalidPath(path)` accordingly.
 ```swift
@@ -29,10 +31,23 @@ struct HTTPData: Equatable {
     let response: HTTPURLResponse
 }
 ```
-If you are only interested in data, you can use the `output.success` property from `response`:
+If you are only interested in data, you can use the `success` property from `response`:
 ```swift
 try? HTTPURLRequest(path: "http://example.com/").dataTask() { response in
-    print(response.output.success)
+    print(response.success)
+}
+```
+To get `String` value from `response`:
+```swift
+let data: Data? = response.success?.data
+let string: String? = data?.utf8String
+```
+To get `UIImage` value from `response` (pass `response` to the main thread when working with `UI`):
+```swift
+let data: Data? = response.success?.data
+DispatchQueue.main.async {
+    let image: UIImage? = data?.image
+    ...
 }
 ```
 ### Requests with URL

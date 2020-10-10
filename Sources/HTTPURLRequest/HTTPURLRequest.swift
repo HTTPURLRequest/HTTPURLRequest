@@ -8,6 +8,7 @@ import Foundation
 ///  to send the request to a server.
 public struct HTTPURLRequest {
     public typealias Completion = (Result<HTTPData, Swift.Error>) -> Void
+    public typealias DecodableCompletion<T: Decodable> = (Result<DecodableResponse<T>, Swift.Error>) -> Void
     
     public enum Error: Swift.Error, Equatable {
         case emptyPath
@@ -67,6 +68,26 @@ public struct HTTPURLRequest {
         }
         
         task.resume()
+        
+        return task
+    }
+    
+    @discardableResult
+    public func dataTask<T: Decodable>(decoding:T.Type, decoder: JSONDecoder = JSONDecoder(), completion: @escaping DecodableCompletion<T>) -> URLSessionDataTask {
+        let task = self.dataTask { response in
+            switch response {
+            case let .success(result):
+                switch result.data.decoding(type: T.self, decoder: decoder) {
+                case let .success(decoded):
+                    let decodableResponse = DecodableResponse(decoded: decoded, response: result.response)
+                    completion(.success(decodableResponse))
+                case let .failure(error):
+                    completion(.failure(error))
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
         
         return task
     }

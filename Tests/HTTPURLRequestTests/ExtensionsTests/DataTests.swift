@@ -2,10 +2,6 @@ import XCTest
 @testable import HTTPURLRequest
 
 class DataTests: XCTestCase {
-    struct TestJSON: Decodable, Equatable {
-        let names: [String]
-    }
-    let jsonString = #"{"names":["Bob","Tim","Tina"]}"#
     var sut: Data!
 
     func test_utf8String_createsCorrectString() {
@@ -43,7 +39,7 @@ class DataTests: XCTestCase {
     }
     
     func test_json_correctJSON_createsCorrectValue() {
-        self.sut = Data(self.jsonString.utf8)
+        self.sut = Data(jsonString.utf8)
         let actualJSON = self.sut.json().success as? [String: [String]]
         let expectedJSON = try? JSONSerialization.jsonObject(with: self.sut) as? [String: [String]]
         
@@ -61,7 +57,7 @@ class DataTests: XCTestCase {
     }
     
     func test_decoding_correctJSON_createsCorrectDecodable() {
-        self.sut = Data(self.jsonString.utf8)
+        self.sut = Data(jsonString.utf8)
         let actualTestJSON = self.sut.decoding(type: TestJSON.self)
         let expectedTestJSON = try? TestJSON(decoding: self.sut)
         

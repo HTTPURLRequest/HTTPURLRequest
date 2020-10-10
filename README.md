@@ -42,13 +42,13 @@ request.dataTask() { response in
     }
 }
 ```
-`response` type is `Result<HTTPData, Error>`.
+`response` type is `Result<DataResponse, Error>`.
 
 [`Result`](https://developer.apple.com/documentation/swift/result) is a value that represents either a success or a failure, including an associated value in each case from `Swift Standard Library Framework`.
 
-`HTTPData` is simple [`Struct`](https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html).
+`DataResponse` is simple [`Struct`](https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html).
 ```swift
-struct HTTPData: Equatable {
+struct DataResponse: Equatable {
     let data: Data
     let response: HTTPURLResponse
 }

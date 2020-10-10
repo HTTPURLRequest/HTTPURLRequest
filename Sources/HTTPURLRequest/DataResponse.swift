@@ -1,6 +1,6 @@
 import Foundation
 
-public struct HTTPData: Equatable {
+public struct DataResponse: Equatable {
     public let data: Data
     public let response: HTTPURLResponse
 }

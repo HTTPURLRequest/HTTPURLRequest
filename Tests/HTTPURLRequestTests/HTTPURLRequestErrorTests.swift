@@ -25,7 +25,7 @@ class HTTPURLRequestErrorTests: XCTestCase {
         path = "http://example.com/"
         let response = HTTPURLResponse(url: path.url!, statusCode: 500)
         let unwrappedResponse = try XCTUnwrap(response)
-        let httpData = HTTPData(data: Data(), response: unwrappedResponse)
+        let httpData = DataResponse(data: Data(), response: unwrappedResponse)
         self.sut = HTTPURLRequest.Error.wrongStatusCode(httpData)
         let statusCode = httpData.response.localizedStatusCode
         let error = httpData.data.utf8String

@@ -7,7 +7,7 @@ import Foundation
 /// [URLSession](https://developer.apple.com/documentation/foundation/urlsession)
 ///  to send the request to a server.
 public struct HTTPURLRequest {
-    public typealias Completion = (Result<HTTPData, Swift.Error>) -> Void
+    public typealias Completion = (Result<DataResponse, Swift.Error>) -> Void
     public typealias DecodableCompletion<T: Decodable> = (Result<DecodableResponse<T>, Swift.Error>) -> Void
     
     public enum Error: Swift.Error, Equatable {
@@ -15,7 +15,7 @@ public struct HTTPURLRequest {
         case invalidPath(_ path: String)
         case emptyData
         case unknownResponse
-        case wrongStatusCode(_ httpData: HTTPData)
+        case wrongStatusCode(_ httpData: DataResponse)
     }
     
     /// A URL load request that is independent of protocol or URL scheme.
@@ -58,7 +58,7 @@ public struct HTTPURLRequest {
                 return
             }
             
-            let httpData = HTTPData(data: data, response: httpResponse)
+            let httpData = DataResponse(data: data, response: httpResponse)
             if (200...299).contains(httpResponse.statusCode) {
                 completion(.success(httpData))
             } else {

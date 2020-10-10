@@ -136,11 +136,11 @@ extension HTTPURLRequestTests {
         XCTAssertEqual(actualError, expectedError)
     }
 
-    typealias APIDataResult = (calledCompletion: Bool, data: HTTPData?, error: Error?)
+    typealias APIDataResult = (calledCompletion: Bool, data: DataResponse?, error: Error?)
 
     func runDataTask(data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> APIDataResult {
         var calledCompletion = false
-        var receivedData: HTTPData?
+        var receivedData: DataResponse?
         var receivedError: Error?
 
         self.sut.dataTask() { (result) in
@@ -182,7 +182,7 @@ extension HTTPURLRequestTests {
     func test_dataTask_givenResponseStatusCode500_callsCompletionWithFailure() throws {
         let response = self.response(500)
         let unwrappedResponse = try XCTUnwrap(response)
-        let httpData = HTTPData(data: Data(), response: unwrappedResponse)
+        let httpData = DataResponse(data: Data(), response: unwrappedResponse)
         let expectedError = HTTPURLRequest.Error.wrongStatusCode(httpData)
 
         let result = self.runDataTask(data: Data(), response)

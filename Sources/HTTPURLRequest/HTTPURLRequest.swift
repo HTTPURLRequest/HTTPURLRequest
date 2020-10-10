@@ -72,8 +72,7 @@ public struct HTTPURLRequest {
         return task
     }
     
-    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, decodes an instance of the indicated type.
-    /// and calls a handler upon completion.
+    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, decodes an instance of the indicated type and calls a handler upon completion.
     ///
     /// Newly-initialized tasks start the task immediately.
     /// - Parameters:
@@ -100,8 +99,7 @@ public struct HTTPURLRequest {
         return task
     }
     
-    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, decodes an instance of the indicated type.
-    /// and calls a handler upon completion.
+    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, converts JSON to the equivalent Foundation objects and calls a handler upon completion.
     ///
     /// Newly-initialized tasks start the task immediately.
     /// - Parameters:

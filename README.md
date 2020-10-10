@@ -21,12 +21,12 @@ let request = try? HTTPURLRequest(path: "http://example.com/")
 ```
 ### Request with `URL`
 ```swift
-let url = URL(string: "http://example.com/")
+let url = URL(string: "http://example.com/")!
 let request = HTTPURLRequest(url: url)
 ```
 ### Request with `URLRequest`
 ```swift
-let url = URL(string: "http://example.com/")
+let url = URL(string: "http://example.com/")!
 let urlRequest = URLRequest(url: url)
 let request = HTTPURLRequest(request: urlRequest)
 ```

@@ -72,8 +72,16 @@ public struct HTTPURLRequest {
         return task
     }
     
+    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, decodes an instance of the indicated type.
+    /// and calls a handler upon completion.
+    ///
+    /// Newly-initialized tasks start the task immediately.
+    /// - Parameters:
+    ///   - decoding: Decoded type.
+    ///   - decoder: An object that decodes instances of a data type from JSON objects (optional).
+    ///   - completion: The completion handler to call when the load request is complete. This handler is executed on the delegate queue.
     @discardableResult
-    public func dataTask<T: Decodable>(decoding:T.Type, decoder: JSONDecoder = JSONDecoder(), completion: @escaping DecodableCompletion<T>) -> URLSessionDataTask {
+    public func dataTask<T: Decodable>(decoding: T.Type, decoder: JSONDecoder = JSONDecoder(), completion: @escaping DecodableCompletion<T>) -> URLSessionDataTask {
         let task = self.dataTask { response in
             switch response {
             case let .success(result):
@@ -92,6 +100,13 @@ public struct HTTPURLRequest {
         return task
     }
     
+    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, decodes an instance of the indicated type.
+    /// and calls a handler upon completion.
+    ///
+    /// Newly-initialized tasks start the task immediately.
+    /// - Parameters:
+    ///   - options: Options used when creating Foundation objects from JSON data (optional).
+    ///   - completion: The completion handler to call when the load request is complete. This handler is executed on the delegate queue.
     @discardableResult
     public func jsonDataTask(options opt: JSONSerialization.ReadingOptions = [], completion: @escaping JSONCompletion) -> URLSessionDataTask {
         let task = self.dataTask { response in
@@ -132,6 +147,10 @@ public extension HTTPURLRequest {
         self.init(url: url, session: session)
     }
     
+    /// Creates and initializes a URL request with the given URLRequest and URLSession.
+    /// - Parameters:
+    ///   - url: A value that identifies the location of a resource, such as an item on a remote server or the path to a local file.
+    ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared).
     init(url: URL, session: URLSession = URLSession.shared) {
         let request = url.urlRequest
         self.init(request: request, session: session)

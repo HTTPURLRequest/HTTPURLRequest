@@ -24,10 +24,10 @@ public struct HTTPURLRequest {
     /// An object that coordinates a group of related, network data-transfer tasks.
     public let session: URLSession
     
-    /// Creates and initializes a URL request with the given URLRequest and URLSession (optional).
+    /// Creates and initializes a URL request with the given URLRequest and URLSession.
     /// - Parameters:
     ///   - request: A URL load request that is independent of protocol or URL scheme.
-    ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared)
+    ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared).
     public init(request: URLRequest, session: URLSession = URLSession.shared) {
         self.request = request
         self.session = session
@@ -37,8 +37,7 @@ public struct HTTPURLRequest {
     /// and calls a handler upon completion.
     ///
     /// Newly-initialized tasks start the task immediately.
-    /// - Parameter completion: The completion handler to call when the load request is complete.
-    /// This handler is executed on the delegate queue.
+    /// - Parameter completion: The completion handler to call when the load request is complete. This handler is executed on the delegate queue.
     @discardableResult
     public func dataTask(completion: @escaping Completion) -> URLSessionDataTask {
         let task = self.session.dataTask(with: self.request) { (data, response, error) in
@@ -117,6 +116,11 @@ public struct HTTPURLRequest {
 // MARK: Initialization
 
 public extension HTTPURLRequest {
+    /// Creates and initializes a URL request with the given URLRequest and URLSession.
+    /// - Parameters:
+    ///   - path: path string value
+    ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared).
+    /// - Throws: If the path is empty string or has an invalid value an error is thrown: HTTPURLRequest.Error.emptyPath or HTTPURLRequest.Error.invalidPath(path) accordingly.
     init(path: String, session: URLSession = URLSession.shared) throws {
         let path = path.trimmingCharacters(in: .whitespacesAndNewlines)
         if path.isEmpty {

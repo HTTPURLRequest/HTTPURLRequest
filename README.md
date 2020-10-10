@@ -112,3 +112,14 @@ struct DecodableResponse<T: Decodable> {
     let response: HTTPURLResponse
 }
 ```
+If you are only interested in data, you can use the `success` property from `response`:
+```swift
+struct Product: Decodable {
+    let title: String
+}
+request.dataTask(decoding: Product.self) { response in
+    let result: DecodableResponse<Product>? = response.success
+    let product: Product? = result?.decoded
+    print(product)
+}
+```

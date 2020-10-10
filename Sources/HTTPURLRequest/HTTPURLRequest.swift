@@ -147,6 +147,19 @@ public extension HTTPURLRequest {
     
     /// Creates and initializes a URL request with the given URLRequest and URLSession.
     /// - Parameters:
+    ///   - path: path string value
+    ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared).
+    static func create(path: String, session: URLSession = URLSession.shared) -> Result<HTTPURLRequest, Swift.Error> {
+        do {
+            let request = try HTTPURLRequest(path: path, session: session)
+            return .success(request)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    /// Creates and initializes a URL request with the given URLRequest and URLSession.
+    /// - Parameters:
     ///   - url: A value that identifies the location of a resource, such as an item on a remote server or the path to a local file.
     ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared).
     init(url: URL, session: URLSession = URLSession.shared) {

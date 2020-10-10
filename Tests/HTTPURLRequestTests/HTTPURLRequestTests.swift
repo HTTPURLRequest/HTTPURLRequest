@@ -86,6 +86,21 @@ extension HTTPURLRequestTests {
         XCTAssertNotNil(self.sut.session)
         XCTAssertEqual(self.sut.session, URLSession.shared)
     }
+    
+    func test_createWithInvalidPath_createsFailureResult() {
+        let path = "INVALID PATH"
+        let result = HTTPURLRequest.create(path: path)
+        
+        XCTAssertNil(result.success)
+        XCTAssertNotNil(result.failure)
+    }
+    
+    func test_createWithValidPath_createsSuccessResult() {
+        let result = HTTPURLRequest.create(path: self.path)
+        
+        XCTAssertNotNil(result.success)
+        XCTAssertNil(result.failure)
+    }
 
     static var allTests = [
         ("test_defaultInit_setsRequestAndSession", test_defaultInit_setsRequestAndSession),

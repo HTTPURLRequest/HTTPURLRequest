@@ -19,6 +19,11 @@ There are available 3 request options: with [`String`](https://developer.apple.c
 ```swift
 let request = try? HTTPURLRequest(path: "http://example.com/")
 ```
+For fast debug purposes you can use:
+```swift
+let result: Result<HTTPURLRequest, Error> = HTTPURLRequest.create(path: "http://example.com/")
+print(result)
+```
 ### Request with `URL`
 ```swift
 let url = URL(string: "http://example.com/")!

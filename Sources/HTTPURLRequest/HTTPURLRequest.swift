@@ -9,6 +9,7 @@ import Foundation
 public struct HTTPURLRequest {
     public typealias Completion = (Result<DataResponse, Swift.Error>) -> Void
     public typealias DecodableCompletion<T: Decodable> = (Result<DecodableResponse<T>, Swift.Error>) -> Void
+    public typealias JSONCompletion = (Result<JSONResponse, Swift.Error>) -> Void
     
     public enum Error: Swift.Error, Equatable {
         case emptyPath
@@ -81,6 +82,26 @@ public struct HTTPURLRequest {
                 case let .success(decoded):
                     let decodableResponse = DecodableResponse(decoded: decoded, response: result.response)
                     completion(.success(decodableResponse))
+                case let .failure(error):
+                    completion(.failure(error))
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+        
+        return task
+    }
+    
+    @discardableResult
+    public func jsonDataTask(options opt: JSONSerialization.ReadingOptions = [], completion: @escaping JSONCompletion) -> URLSessionDataTask {
+        let task = self.dataTask { response in
+            switch response {
+            case let .success(result):
+                switch result.data.json(options: opt) {
+                case let .success(json):
+                    let jsonResponse = JSONResponse(json: json, response: result.response)
+                    completion(.success(jsonResponse))
                 case let .failure(error):
                     completion(.failure(error))
                 }

@@ -123,3 +123,33 @@ request.dataTask(decoding: Product.self) { response in
     print(product)
 }
 ```
+### Making `jsonObgect` Requests
+```swift
+request.jsonDataTask() { response in
+    switch response {
+    case let .success(result):
+        print(result.json)
+    case let .failure(error):
+        print(error)
+    }
+}
+```
+`response` type is `Result<JSONResponse, Error>`.
+
+[`Result`](https://developer.apple.com/documentation/swift/result) is a value that represents either a success or a failure, including an associated value in each case from `Swift Standard Library Framework`.
+
+`JSONResponse` is simple [`Struct`](https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html).
+```swift
+struct JSONResponse {
+    let json: Any
+    let response: HTTPURLResponse
+}
+```
+If you are only interested in data, you can use the `success` property from `response`:
+```swift
+request.jsonDataTask() { response in
+    let result: JSONResponse? = response.success
+    let json: Any? = result?.json
+    print(json)
+}
+```

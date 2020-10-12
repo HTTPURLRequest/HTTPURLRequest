@@ -10,6 +10,7 @@ public struct HTTPURLRequest {
     public typealias Completion = (Result<DataResponse, Swift.Error>) -> Void
     public typealias DecodableCompletion<T: Decodable> = (Result<DecodableResponse<T>, Swift.Error>) -> Void
     public typealias JSONCompletion = (Result<JSONResponse, Swift.Error>) -> Void
+    public typealias ImageCompletion = (Result<ImageResponse, Swift.Error>) -> Void
     
     public enum Error: Swift.Error, Equatable {
         case emptyPath
@@ -17,6 +18,7 @@ public struct HTTPURLRequest {
         case emptyData
         case unknownResponse
         case wrongStatusCode(_ dataResponse: DataResponse)
+        case invalidImageData
     }
     
     /// A URL load request that is independent of protocol or URL scheme.
@@ -124,6 +126,30 @@ public struct HTTPURLRequest {
         
         return task
     }
+    
+    /// Creates a task that retrieves the contents of a URL based on the specified URL request object, converts JSON to the equivalent Foundation objects and calls a handler upon completion.
+    ///
+    /// Newly-initialized tasks start the task immediately.
+    /// - Parameter completion: The completion handler to call when the load request is complete. This handler is executed on the delegate queue.
+    @discardableResult
+    public func imageDataTask(completion: @escaping ImageCompletion) -> URLSessionDataTask {
+        let task = self.dataTask { response in
+            switch response {
+            case let .success(result):
+                if let image = result.data.image {
+                    let imageResponse = ImageResponse(image: image, response: result.response)
+                    completion(.success(imageResponse))
+                } else {
+                    let error = Error.invalidImageData
+                    completion(.failure(error))
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+        
+        return task
+    }
 }
 
 // MARK: Initialization
@@ -188,6 +214,9 @@ extension HTTPURLRequest.Error: LocalizedError {
             let error = httpData.data.utf8String
             let key = "Unsuccessful HTTP status code: \(statusCode). Error: \(error)"
             return NSLocalizedString(key, comment: statusCode)
+        case .invalidImageData:
+            let key = "Unsupported data for image to initialize"
+            return NSLocalizedString(key, comment: "Invalid image data")
         }
     }
 }

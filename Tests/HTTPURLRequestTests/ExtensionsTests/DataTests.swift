@@ -12,23 +12,13 @@ class DataTests: XCTestCase {
     }
     
     func test_image_createsCorrectImage() {
-        let image = self.getImage(with: .black, size: CGSize(width: 10, height: 10))
+        let image = UIImage.create(with: .black, size: CGSize(width: 10, height: 10))
         self.sut = image?.pngData()
         let actualImage = UIImage(data: self.sut)
         let expectedImage = self.sut.image
         
         XCTAssertNotNil(actualImage)
         XCTAssertEqual(actualImage?.size, expectedImage?.size)
-    }
-    
-    func getImage(with color: UIColor, size: CGSize) -> UIImage? {
-        let rect = CGRect(origin: .zero, size: size)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        color.setFill()
-        UIRectFill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
     }
     
     func test_json_invalidJSON_createsErrorValue() {

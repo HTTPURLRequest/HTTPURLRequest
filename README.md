@@ -163,3 +163,39 @@ request.jsonDataTask() { response in
     print(json)
 }
 ```
+### Making `Image` Requests
+> **Warning**. Don't forget to pass the response to the main thread when working with UI, as requests are executed in the background thread.
+```swift
+request.imageDataTask() { response in
+    switch response {
+    case let .success(result):
+        DispatchQueue.main.async {
+            let image: UIImage = result.image
+            ...
+        }
+    case let .failure(error):
+        print(error)
+    }
+}
+```
+`response` type is `Result<ImageResponse, Error>`.
+
+[`Result`](https://developer.apple.com/documentation/swift/result) is a value that represents either a success or a failure, including an associated value in each case from `Swift Standard Library Framework`.
+
+`ImageResponse` is simple [`Struct`](https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html).
+```swift
+struct ImageResponse {
+    let image: UIImage
+    let response: HTTPURLResponse
+}
+```
+If you are only interested in data, you can use the `success` property from `response`:
+```swift
+request.imageDataTask() { response in
+    let result: ImageResponse? = response.success
+    DispatchQueue.main.async {
+        let image: UIImage? = result?.image
+        ...
+    }
+}
+```

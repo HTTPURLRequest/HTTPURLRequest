@@ -151,9 +151,9 @@ extension HTTPURLRequestTests {
         XCTAssertEqual(actualError, expectedError)
     }
 
-    typealias APIDataResult = (calledCompletion: Bool, data: DataResponse?, error: Error?)
+    typealias DataResult = (calledCompletion: Bool, data: DataResponse?, error: Error?)
 
-    func runDataTask(data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> APIDataResult {
+    func runDataTask(data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> DataResult {
         var calledCompletion = false
         var receivedData: DataResponse?
         var receivedError: Error?
@@ -220,9 +220,9 @@ extension HTTPURLRequestTests {
 // MARK: - Decodable DataTask
 
 extension HTTPURLRequestTests {
-    typealias APIDecodableResult<T: Decodable> = (calledCompletion: Bool, decoded: DecodableResponse<T>?, error: Error?)
+    typealias DecodableResult<T: Decodable> = (calledCompletion: Bool, decoded: DecodableResponse<T>?, error: Error?)
 
-    func runDecodableDataTask<T: Decodable>(type: T.Type, data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> APIDecodableResult<T> {
+    func runDecodableDataTask<T: Decodable>(type: T.Type, data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> DecodableResult<T> {
         var calledCompletion = false
         var receivedDecoded: DecodableResponse<T>?
         var receivedError: Error?
@@ -261,11 +261,11 @@ extension HTTPURLRequestTests {
 // MARK: - JSON DataTask
 
 extension HTTPURLRequestTests {
-    typealias APIJSONResult = (calledCompletion: Bool, json: Any?, error: Error?)
+    typealias JSONResult = (calledCompletion: Bool, json: JSONResponse?, error: Error?)
 
-    func runJSONDataTask(data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> APIJSONResult {
+    func runJSONDataTask(data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> JSONResult {
         var calledCompletion = false
-        var receivedJSON: Any?
+        var receivedJSON: JSONResponse?
         var receivedError: Error?
 
         self.sut.jsonDataTask() { result in
@@ -294,6 +294,47 @@ extension HTTPURLRequestTests {
 
         XCTAssertTrue(result.calledCompletion)
         XCTAssertNotNil(result.json)
+        XCTAssertNil(result.error)
+    }
+}
+
+// MARK: - Image DataTask
+
+extension HTTPURLRequestTests {
+    typealias ImageResult = (calledCompletion: Bool, image: ImageResponse?, error: Error?)
+
+    func runImageDataTask(data: Data?, _ response: HTTPURLResponse? = nil, _ error: Error? = nil) -> ImageResult {
+        var calledCompletion = false
+        var receivedImage: ImageResponse?
+        var receivedError: Error?
+
+        self.sut.imageDataTask() { result in
+            calledCompletion = true
+
+            receivedImage = result.success
+            receivedError = result.failure
+        }
+
+        self.session.lastTask?.completionHandler(data, response, error)
+
+        return (calledCompletion, receivedImage, receivedError)
+    }
+    
+    func test_imageDataTask_givenInvalidData_callsCompletionWithFailure() {
+        let result = self.runImageDataTask(data: Data(), self.response(200))
+
+        XCTAssertTrue(result.calledCompletion)
+        XCTAssertNil(result.image)
+        XCTAssertNotNil(result.error)
+    }
+    
+    func test_imageDataTask_validData_callsCompletionWithSuccess() throws {
+        let image = UIImage.create(with: .black, size: CGSize(width: 10, height: 10))
+        let imageData = image!.pngData()
+        let result = self.runImageDataTask(data: imageData, self.response(200))
+
+        XCTAssertTrue(result.calledCompletion)
+        XCTAssertNotNil(result.image)
         XCTAssertNil(result.error)
     }
 }

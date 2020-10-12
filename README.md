@@ -4,6 +4,11 @@
 
 `HTTPURLRequest` keeps the information about the request using [`URLRequest`](https://developer.apple.com/documentation/foundation/urlrequest) and uses [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession) to send the request to a server.
 ## Installation
+### CocoaPods
+[`CocoaPods`](https://cocoapods.org/) is a dependency manager for Swift and Objective-C Cocoa projects. To integrate `HTTPURLRequest` into your Xcode project using CocoaPods, specify it in your `Podfile`:
+```ruby
+pod 'HTTPURLRequest', git: 'https://github.com/HTTPURLRequest/HTTPURLRequest.git'
+```
 ### Swift Package Manager
 To add a package dependency to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `HTTPURLRequest` repository URL:
 ```

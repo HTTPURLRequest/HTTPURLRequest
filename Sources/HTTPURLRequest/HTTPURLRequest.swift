@@ -16,7 +16,7 @@ public struct HTTPURLRequest {
         case invalidPath(_ path: String)
         case emptyData
         case unknownResponse
-        case wrongStatusCode(_ httpData: DataResponse)
+        case wrongStatusCode(_ dataResponse: DataResponse)
     }
     
     /// A URL load request that is independent of protocol or URL scheme.
@@ -58,11 +58,11 @@ public struct HTTPURLRequest {
                 return
             }
             
-            let httpData = DataResponse(data: data, response: httpResponse)
+            let dataResponse = DataResponse(data: data, response: httpResponse)
             if (200...299).contains(httpResponse.statusCode) {
-                completion(.success(httpData))
+                completion(.success(dataResponse))
             } else {
-                let error = Error.wrongStatusCode(httpData)
+                let error = Error.wrongStatusCode(dataResponse)
                 completion(.failure(error))
             }
         }

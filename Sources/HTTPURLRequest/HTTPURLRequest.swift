@@ -30,6 +30,13 @@ public struct HTTPURLRequest {
     /// - Parameters:
     ///   - request: A URL load request that is independent of protocol or URL scheme.
     ///   - session: An object that coordinates a group of related, network data-transfer tasks (optional). Default value [URLSession.shared](https://developer.apple.com/documentation/foundation/urlsession/1409000-shared).
+    ///
+    /// Request with `URLRequest`:
+    /// ```
+    /// let url = URL(string: "http://example.com/")!
+    /// let urlRequest = URLRequest(url: url)
+    /// let request = HTTPURLRequest(request: urlRequest)
+    /// ```
     public init(request: URLRequest, session: URLSession = URLSession.shared) {
         self.request = request
         self.session = session
@@ -40,6 +47,53 @@ public struct HTTPURLRequest {
     ///
     /// Newly-initialized tasks start the task immediately.
     /// - Parameter completion: The completion handler to call when the load request is complete. This handler is executed on the delegate queue.
+    ///
+    /// - Warning: Don't forget to pass the response to the main thread if necessary, as requests are executed in the background thread.
+    /// ```
+    /// request.dataTask() { response in
+    ///     switch response {
+    ///     case let .success(result):
+    ///         print(result)
+    ///     case let .failure(error):
+    ///         print(error)
+    ///     }
+    /// }
+    /// ```
+    /// If you are only interested in data, you can use the `success` property from `response`:
+    /// ```
+    /// request.dataTask() { response in
+    ///     print(response.success)
+    /// }
+    /// ```
+    /// To get `String` value from `response`:
+    /// ```
+    /// let data: Data? = response.success?.data
+    /// let string: String? = data?.utf8String
+    /// ```
+    /// To get `UIImage` value from `response` (pass `response` to the main thread when working with `UI`):
+    /// ```
+    /// let data: Data? = response.success?.data
+    /// DispatchQueue.main.async {
+    ///     let image: UIImage? = data?.image
+    ///     ...
+    /// }
+    /// ```
+    /// To get `Decodable` value from `response`:
+    /// ```swift
+    /// struct Product: Decodable {
+    ///     let title: String
+    /// }
+    /// let data: Data? = response.success?.data
+    /// let product: Product? = data?.decoding(type: Product.self).success
+    /// ```
+    /// For more information about `Decodable`, see [Encoding and Decoding Custom Types](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types).
+    ///
+    /// To get `jsonObject` value from `response`:
+    /// ```
+    /// let data: Data? = response.success?.data
+    /// let jsonObject: Any? = data?.json().success
+    /// ```
+    /// For more information about `JSON in Swift`, see [Working with JSON in Swift](https://developer.apple.com/swift/blog/?id=37).
     @discardableResult
     public func dataTask(completion: @escaping Completion) -> URLSessionDataTask {
         let task = self.session.dataTask(with: self.request) { (data, response, error) in

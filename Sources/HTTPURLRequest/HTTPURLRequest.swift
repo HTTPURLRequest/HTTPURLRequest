@@ -65,11 +65,13 @@ public struct HTTPURLRequest {
     ///     print(response.success)
     /// }
     /// ```
+    /// # String
     /// To get `String` value from `response`:
     /// ```
     /// let data: Data? = response.success?.data
     /// let string: String? = data?.utf8String
     /// ```
+    /// # UIImage
     /// To get `UIImage` value from `response` (pass `response` to the main thread when working with `UI`):
     /// ```
     /// let data: Data? = response.success?.data
@@ -78,6 +80,7 @@ public struct HTTPURLRequest {
     ///     ...
     /// }
     /// ```
+    /// # Decodable
     /// To get `Decodable` value from `response`:
     /// ```swift
     /// struct Product: Decodable {
@@ -87,7 +90,7 @@ public struct HTTPURLRequest {
     /// let product: Product? = data?.decoding(type: Product.self).success
     /// ```
     /// For more information about `Decodable`, see [Encoding and Decoding Custom Types](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types).
-    ///
+    /// # jsonObject
     /// To get `jsonObject` value from `response`:
     /// ```
     /// let data: Data? = response.success?.data

@@ -12,15 +12,6 @@ public struct HTTPURLRequest {
     public typealias JSONCompletion = (Result<JSONResponse, Swift.Error>) -> Void
     public typealias ImageCompletion = (Result<ImageResponse, Swift.Error>) -> Void
     
-    public enum Error: Swift.Error, Equatable {
-        case emptyPath
-        case invalidPath(_ path: String)
-        case emptyData
-        case unknownResponse
-        case wrongStatusCode(_ dataResponse: DataResponse)
-        case invalidImageData
-    }
-    
     /// A URL load request that is independent of protocol or URL scheme.
     public let request: URLRequest
     /// An object that coordinates a group of related, network data-transfer tasks.
@@ -248,32 +239,5 @@ public extension HTTPURLRequest {
     init(url: URL, session: URLSession = URLSession.shared) {
         let request = url.urlRequest
         self.init(request: request, session: session)
-    }
-}
-
-extension HTTPURLRequest.Error: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .emptyPath:
-            let key = "String path is empty"
-            return NSLocalizedString(key, comment: "Path is empty")
-        case let .invalidPath(path):
-            let key = "Invalid path for URL: \(path)"
-            return NSLocalizedString(key, comment: "Invalid path for URL")
-        case .emptyData:
-            let key = "There is no data in the server response"
-            return NSLocalizedString(key, comment: "Data is not available")
-        case .unknownResponse:
-            let key = "Server response was not recognized"
-            return NSLocalizedString(key, comment: "Unable to recognize the response")
-        case let .wrongStatusCode(httpData):
-            let statusCode = httpData.response.localizedStatusCode
-            let error = httpData.data.utf8String
-            let key = "Unsuccessful HTTP status code: \(statusCode). Error: \(error)"
-            return NSLocalizedString(key, comment: statusCode)
-        case .invalidImageData:
-            let key = "Unsupported data for image to initialize"
-            return NSLocalizedString(key, comment: "Invalid image data")
-        }
     }
 }

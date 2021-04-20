@@ -3,12 +3,30 @@
 **HTTPURLRequest** is an easy way of an HTTP networking in Swift.
 
 `HTTPURLRequest` keeps the information about the request using [`URLRequest`](https://developer.apple.com/documentation/foundation/urlrequest) and uses [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession) to send the request to a server.
+
+## Content
+- [Installation](#Installation)
+    - [CocoaPods](#CocoaPods)
+    - [Swift Package Manager](#Swift-Package-Manager)
+- [Creating Request](#Creating-Request)
+    - [`String` path](#Request-with-%60String%60-path)
+    - [`URL`](#Request-with-%60URL%60)
+    - [`URLRequest`](#Request-with-%60URLRequest%60)
+- [Making Requests](#Making-Requests)
+    - [`Decodable`](#Making-%60Decodable%60-Requests)
+    - [`jsonObgect`](#Making-%60jsonObgect%60-Requests)
+    - [`Image`](#Making-%60Image%60-Requests)
+
 ## Installation
+
 ### CocoaPods
 [`CocoaPods`](https://cocoapods.org/) is a dependency manager for Swift and Objective-C Cocoa projects. To integrate `HTTPURLRequest` into your Xcode project using CocoaPods, specify it in your `Podfile`:
 ```ruby
 pod 'HTTPURLRequest', git: 'https://github.com/HTTPURLRequest/HTTPURLRequest.git'
 ```
+
+[Go to content](#Content)
+
 ### Swift Package Manager
 To add a package dependency to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `HTTPURLRequest` repository URL:
 ```
@@ -17,8 +35,14 @@ https://github.com/HTTPURLRequest/HTTPURLRequest.git
 You can also navigate to your target’s General pane, and in the “Frameworks, Libraries, and Embedded Content” section, click the + button, select Add Other, and choose Add Package Dependency.
 
 For more information, see [`Adding Package Dependencies to Your App`](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app).
+
+[Go to content](#Content)
+
 ## Creating Request
 There are available 3 request options: with [`String`](https://developer.apple.com/documentation/swift/string) path, [`URL`](https://developer.apple.com/documentation/foundation/url) and [`URLRequest`](https://developer.apple.com/documentation/foundation/urlrequest).
+
+[Go to content](#Content)
+
 ### Request with `String` path
 > **Warning**. If the path is empty string or has an invalid value an error is thrown: `HTTPURLRequest.Error.emptyPath` or `HTTPURLRequest.Error.invalidPath(path)` accordingly.
 ```swift
@@ -29,17 +53,26 @@ For fast debug purposes you can use:
 let result: Result<HTTPURLRequest, Error> = HTTPURLRequest.create(path: "http://example.com/")
 print(result)
 ```
+
+[Go to content](#Content)
+
 ### Request with `URL`
 ```swift
 let url = URL(string: "http://example.com/")!
 let request = HTTPURLRequest(url: url)
 ```
+
+[Go to content](#Content)
+
 ### Request with `URLRequest`
 ```swift
 let url = URL(string: "http://example.com/")!
 let urlRequest = URLRequest(url: url)
 let request = HTTPURLRequest(request: urlRequest)
 ```
+
+[Go to content](#Content)
+
 ## Making Requests
 > **Warning**. Don't forget to pass the response to the main thread if necessary, as requests are executed in the background thread.
 ```swift
@@ -97,6 +130,9 @@ To get `jsonObject` value from `response`:
 let data: Data? = response.success?.data
 let jsonObject: Any? = data?.json().success
 ```
+
+[Go to content](#Content)
+
 ### Making `Decodable` Requests
 ```swift
 struct Product: Decodable {
@@ -133,6 +169,9 @@ request.dataTask(decoding: Product.self) { response in
     print(product)
 }
 ```
+
+[Go to content](#Content)
+
 ### Making `jsonObgect` Requests
 ```swift
 request.jsonDataTask() { response in
@@ -163,6 +202,9 @@ request.jsonDataTask() { response in
     print(json)
 }
 ```
+
+[Go to content](#Content)
+
 ### Making `Image` Requests
 > **Warning**. Don't forget to pass the response to the main thread when working with UI, as requests are executed in the background thread.
 ```swift
@@ -199,3 +241,5 @@ request.imageDataTask() { response in
     }
 }
 ```
+
+[Go to content](#Content)

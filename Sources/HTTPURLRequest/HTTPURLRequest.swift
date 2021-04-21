@@ -112,7 +112,7 @@ public struct HTTPURLRequest {
             if (200...299).contains(httpResponse.statusCode) {
                 completion(.success(dataResponse))
             } else {
-                let error = Error.wrongStatusCode(dataResponse)
+                let error = Error.unsuccessfulHTTPStatusCode(dataResponse)
                 completion(.failure(error))
             }
         }

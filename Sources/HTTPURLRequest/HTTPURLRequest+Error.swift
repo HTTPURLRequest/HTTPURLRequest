@@ -6,11 +6,11 @@ public extension HTTPURLRequest {
         case invalidPath(_ path: String)
         case emptyData
         case unknownResponse
-        case wrongStatusCode(_ dataResponse: DataResponse)
+        case unsuccessfulHTTPStatusCode(_ dataResponse: DataResponse)
         case invalidImageData
         
-        public var wrongStatusCodeHTTPData: DataResponse? {
-            if case let Error.wrongStatusCode(httpData) = self {
+        public var unsuccessfulHTTPStatusCodeData: DataResponse? {
+            if case let Error.unsuccessfulHTTPStatusCode(httpData) = self {
                 return httpData
             }
             
@@ -36,7 +36,7 @@ extension HTTPURLRequest.Error: LocalizedError {
         case .unknownResponse:
             let key = "Server response was not recognized."
             return NSLocalizedString(key, comment: "Unable to recognize the response.")
-        case let .wrongStatusCode(httpData):
+        case let .unsuccessfulHTTPStatusCode(httpData):
             let statusCode = httpData.response.localizedStatusCode
             let key = "Unsuccessful HTTP status code: \(statusCode)."
             return NSLocalizedString(key, comment: statusCode)

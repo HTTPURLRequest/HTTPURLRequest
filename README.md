@@ -16,6 +16,7 @@
     - [`Decodable`](#Making-%60Decodable%60-Requests)
     - [`jsonObject`](#Making-%60jsonObject%60-Requests)
     - [`Image`](#Making-%60Image%60-Requests)
+- [Unsuccessful HTTP status code](#Unsuccessful-HTTP-status-code)
 
 ## Installation
 
@@ -243,3 +244,23 @@ request.imageDataTask() { response in
 ```
 
 [Go to content](#Content)
+
+## Unsuccessful HTTP status code
+
+All HTTP status codes out of range 200...299 calls failure. 
+To get the data in case of an unsuccessful status code use the error parameter `unsuccessfulHTTPStatusCodeData`.
+```swift
+request.dataTask() { response in
+    switch response {
+    case let .success(result):
+        print(result)
+    case let .failure(error):
+        if let httpData = error.httpURLRequest?.unsuccessfulHTTPStatusCodeData {
+            print(httpData.data.utf8String)
+        }
+    }
+}
+```
+
+[Go to content](#Content)
+

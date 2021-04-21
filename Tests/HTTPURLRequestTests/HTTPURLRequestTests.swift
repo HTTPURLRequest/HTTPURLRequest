@@ -198,13 +198,13 @@ extension HTTPURLRequestTests {
         let response = self.response(500)
         let unwrappedResponse = try XCTUnwrap(response)
         let httpData = DataResponse(data: Data(), response: unwrappedResponse)
-        let expectedError = HTTPURLRequest.Error.wrongStatusCode(httpData)
+        let expectedError = HTTPURLRequest.Error.unsuccessfulHTTPStatusCode(httpData)
 
         let result = self.runDataTask(data: Data(), response)
 
         XCTAssertTrue(result.calledCompletion)
         XCTAssertNil(result.data)
-        let actualError = result.error as? HTTPURLRequest.Error
+        let actualError = result.error?.httpURLRequest
         XCTAssertEqual(actualError, expectedError)
     }
 

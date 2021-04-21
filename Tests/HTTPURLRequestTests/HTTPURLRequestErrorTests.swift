@@ -26,7 +26,7 @@ class HTTPURLRequestErrorTests: XCTestCase {
         let response = HTTPURLResponse(url: path.url!, statusCode: 500)
         let unwrappedResponse = try XCTUnwrap(response)
         let httpData = DataResponse(data: Data(), response: unwrappedResponse)
-        self.sut = HTTPURLRequest.Error.wrongStatusCode(httpData)
+        self.sut = HTTPURLRequest.Error.unsuccessfulHTTPStatusCode(httpData)
         let statusCode = httpData.response.localizedStatusCode
         localizedDescription = "Unsuccessful HTTP status code: \(statusCode)."
         XCTAssertEqual(self.sut.localizedDescription, localizedDescription)
@@ -38,9 +38,9 @@ class HTTPURLRequestErrorTests: XCTestCase {
         let unwrappedResponse = try XCTUnwrap(response)
         let data = Data()
         let httpData = DataResponse(data: data, response: unwrappedResponse)
-        self.sut = HTTPURLRequest.Error.wrongStatusCode(httpData)
+        self.sut = HTTPURLRequest.Error.unsuccessfulHTTPStatusCode(httpData)
         
-        let errorHTTPData = self.sut.wrongStatusCodeHTTPData
+        let errorHTTPData = self.sut.unsuccessfulHTTPStatusCodeData
         XCTAssertNotNil(errorHTTPData)
         XCTAssertEqual(errorHTTPData?.response, response)
         XCTAssertEqual(errorHTTPData?.data, data)

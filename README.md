@@ -14,7 +14,7 @@
     - [`URLRequest`](#Request-with-%60URLRequest%60)
 - [Making Requests](#Making-Requests)
     - [`Decodable`](#Making-%60Decodable%60-Requests)
-    - [`jsonObgect`](#Making-%60jsonObgect%60-Requests)
+    - [`jsonObject`](#Making-%60jsonObject%60-Requests)
     - [`Image`](#Making-%60Image%60-Requests)
 
 ## Installation
@@ -172,7 +172,7 @@ request.dataTask(decoding: Product.self) { response in
 
 [Go to content](#Content)
 
-### Making `jsonObgect` Requests
+### Making `jsonObject` Requests
 ```swift
 request.jsonDataTask() { response in
     switch response {

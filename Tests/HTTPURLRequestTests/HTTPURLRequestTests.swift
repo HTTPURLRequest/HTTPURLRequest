@@ -194,7 +194,7 @@ extension HTTPURLRequestTests {
         XCTAssertEqual(actualError, expectedError)
     }
 
-    func test_dataTask_givenResponseStatusCode500_callsCompletionWithFailure() throws {
+    func test_dataTask_statusCode500_callsFailure() throws {
         let response = self.response(500)
         let unwrappedResponse = try XCTUnwrap(response)
         let httpData = DataResponse(data: Data(), response: unwrappedResponse)

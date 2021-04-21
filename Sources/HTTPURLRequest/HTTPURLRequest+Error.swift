@@ -8,6 +8,14 @@ public extension HTTPURLRequest {
         case unknownResponse
         case wrongStatusCode(_ dataResponse: DataResponse)
         case invalidImageData
+        
+        public var wrongStatusCodeHTTPData: DataResponse? {
+            if case let Error.wrongStatusCode(httpData) = self {
+                return httpData
+            }
+            
+            return nil
+        }
     }
     
     
